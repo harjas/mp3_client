@@ -1,0 +1,35 @@
+<div class="list" ng-controller='AddTaskController'>
+	<form data-abide style="width:50%; margin:0 auto">
+	  <div ng-hide="hideValue" class="large-12 column">
+          <div data-alert class="alert-box round">
+              {{message}}
+            <a href="#/editTask/{{task['data']._id}}" ng-click="hide()"class="close">&times;</a>
+          </div>
+    </div>
+	  <div class="name-field">
+	    <label>Task name <small>required</small>
+	      <input type="text" required ng-model="name">
+	    </label>
+	    <small class="error">Name is required and must be a string.</small>
+	  </div>
+	  <div class="name-field">
+	    <label>Description 
+	      <input type="text" ng-model="description">
+	    </label>
+	  </div>
+	  <label>Date <small>required</small>
+		  <datepicker date-set="{{date}}" required>
+	        <input type="text" ng-model="date">
+	      </datepicker>
+	      <small class="error">Name is required and must be a string.</small>
+	    </label>
+
+	    <label>User 
+          <select ng-options="user.name for user in users" ng-model="selectedUser" ng-change="changeValue(selectedUser)"></select>
+          <!-- <select ng-model="selectedUser" />
+            <option ng-repeat="user in users" value="{{$index}}">{{user.name}}</option>
+          </select> -->
+	    </label>
+	  <button ng-click="addTask()" type="submit">Submit</button>
+	</form>
+</div>

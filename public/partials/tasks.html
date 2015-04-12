@@ -1,8 +1,36 @@
 <div class="list" ng-controller='TasksController'>    
-  Second Controller
+  <span style="float:right; margin-right: 8%;"><a href="#/addTask" class="button success">Add Task</a></span>
+  
+  <div class="row">
+    <div class="small-4 columns">
+      <h4>Name</h4>
+    </div>
+    <div class="small-5 columns">
+      <h4>ID</h4>
+    </div>
+    <div class="small-3 columns">
+      <h4>&nbsp</h4>
+    </div>
+  </div>
+
   <ul>
     <li ng-repeat="task in tasks">
-      <h3>{{task.name}}</h3>
+    <!-- <li dir-paginate="task in tasks | itemsPerPage: 10"> -->
+      <div class="row">
+        <div class="small-4 columns">
+          <a href="#/tasks/{{task._id}}"<span ng-bind="task.name"></span></a>
+        </div>
+        <div class="small-5 columns">
+          <span ng-bind="task.assignedUser"></span>
+        </div>
+        <div class="small-3 columns">
+          <button ng-click="deleteTask(task._id, $index)" class="button tiny alert">Delete Task</button>
+        </div>
+      </div>
     </li>
   </ul>
+
+  <dir-pagination-controls
+    template-url="./lib/angular-utils-pagination/dirPagination.tpl.html">
+ 	</dir-pagination-controls>
 </div>

@@ -54,6 +54,10 @@ angular.module('demoServices', [])
                 console.log(task);
                 var baseUrl = $window.sessionStorage.baseurl;
                 return $http.put(baseUrl+'/api/tasks/'+task._id, task);
+            },
+            addTask: function(task){
+                var baseUrl = $window.sessionStorage.baseurl;
+                return $http.post(baseUrl+'/api/tasks/',task);    
             }
         }
     })

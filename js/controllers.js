@@ -12,14 +12,26 @@ var demoControllers = angular.module('demoControllers', []);
 
 // }]);
 
-demoControllers.controller('UsersController', ['$scope', '$http', 'Users', '$window' , function($scope, $http,  Users, $window) {
+demoControllers.controller('UsersController', ['$scope', '$http', 'Users', 'Tasks','$window' , function($scope, $http,  Users, Tasks, $window) {
   $scope.hideValue = true;
   Users.getUsers().success(function(data){
     $scope.users = data['data'];
   });
 
-  $scope.deleteUser = function deleteUser(users, index, username, id){
-    console.log(id); 
+  $scope.deleteUser = function deleteUser(users, index, username, id){ 
+    Tasks.getUserTasks(id).success(function(tasks){
+      $scope.tasks = tasks['data'];
+      for(var i=0; i<$scope.tasks.length; i++){
+        Tasks.editTask({_id:$scope.tasks[i]._id, 
+                        name:$scope.tasks[i].name,
+                        deadline:$scope.tasks[i].deadline,
+                        assignedUser:"",
+                        assignedUserName:"unassigned"}).success(function(data){
+                          console.log(data['message']);
+                        });
+      }
+    });
+
     Users.deleteUser(id).success(function(data){
       console.log(data);
       $scope.deletedUser = data;
@@ -185,15 +197,72 @@ demoControllers.controller('EditTaskController', ['$scope', '$http', 'Tasks', 'U
   }
 }]);
 
-// demoControllers.controller('TasksController', ['$scope', 'CommonData' , function($scope, CommonData) {
-//   $scope.data = "";
+demoControllers.controller('AddTaskController', ['$scope', '$http', 'Tasks', 'Users', '$routeParams','$window' , function($scope, $http,  Tasks, Users, $routeParams, $window){
+  console.log("wassup");
+  $scope.hideValue = true;
+  $scope.name = "";
+  $scope.date = "";
+  $scope.description = "";
+  $scope.selectedUser = "";
 
-//   $scope.getData = function(){
-//     $scope.data = CommonData.getData();
+  $(document).foundation({
+      abide : {
+        live_validate : true,
+        validate_on_blur : true,
+        focus_on_invalid : true,
+        error_labels: true
+      }
+    });
+  
+  Users.getUsers().success(function(data){
+    $scope.users = data['data'];
+  });
 
-//   };
+  $scope.changeValue = function(item, index){
+    console.log("calling");
+    $scope.selectedUser = item;
+    console.log($scope.selectedUser);
+  }
 
-// }]);
+  $scope.hide = function(){
+    $scope.hideValue = true;
+  }
+
+  $scope.addTask = function(){
+    if($scope.date === "" || $scope.name === ""){
+      $scope.hideValue = false;
+      $(".alert-box").removeClass("success").addClass("alert");
+      $scope.message = "Cannot create task without date";
+    }
+    else{
+      if($scope.selectedUser === ""){
+        $scope.assignedUser = "";
+        $scope.assignedUserName = "unassigned";
+      }
+      else{
+        $scope.assignedUser = $scope.selectedUser._id;
+        $scope.assignedUserName = $scope.selectedUser.name;
+      }
+      $scope.task = {name: $scope.name,
+                     description:$scope.description,
+                     deadline:$scope.date,
+                     assignedUser:$scope.assignedUser,
+                     assignedUserName:$scope.assignedUserName};
+      console.log($scope.task);
+      Tasks.addTask($scope.task).success(function(response,status){
+        if(status === 201){
+          $scope.message = response['message'];
+          $scope.hideValue = false;
+          $(".alert-box").removeClass("alert").addClass("success");
+        }
+      }).error(function(response){
+          $scope.message = response['message'];
+          $scope.hideValue = false;
+          $(".alert-box").removeClass("success").addClass("alert");
+      });
+    }
+  }
+}]);
 
 
 demoControllers.controller('LlamaListController', ['$scope', '$http', 'Llamas', '$window' , function($scope, $http,  Llamas, $window) {
@@ -202,6 +271,9 @@ demoControllers.controller('LlamaListController', ['$scope', '$http', 'Llamas', 
     $scope.llamas = data;
   });
 
+  $scope.hide = function(){
+    $scope.hideValue = true;
+  }
 
 }]);
 

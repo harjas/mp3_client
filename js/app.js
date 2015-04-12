@@ -24,6 +24,10 @@ demoApp.config(['$routeProvider', function($routeProvider) {
     templateUrl: 'partials/taskdetails.html',
     controller: 'TaskDetailsController'
   }).
+  when('/addTask', {
+    templateUrl: 'partials/addtask.html',
+    controller: 'AddTaskController'
+  }).
   when('/editTask/:id', {
     templateUrl: 'partials/edittask.html',
     controller: 'EditTaskController'
