@@ -4,3 +4,22 @@
 @import "variables";
 @import "mixins";
 @import "base";
+
+.container{
+	margin:0 auto;
+	width:80%;
+	height:auto;
+	background-color: #cdcdcd;
+	border-radius: 10px;
+	margin-top:50px;
+}
+
+.row{
+	text-align: center;
+	padding-top:10px;
+	margin: 0 auto;
+}
+
+.button .butt{
+	border-radius: 10px;
+}

@@ -1,0 +1,43 @@
+<div class="list" ng-controller='UsersController'>
+       
+     <span style="float:right; margin-right: 12%;"><a href="#/addUser" class="button success">Add User</a></span>  
+     <span style="float:left; margin-left:14%;"><h1><u>Users - We Be Cool</u></h1></span><p></p>
+     <div class="row">
+     <div ng-hide="hideValue" class="large-12 column">
+          <div data-alert class="alert-box info round">
+              {{deletedUser["message"]}} - {{deletedUserName}}
+            <a href="#/users" ng-click="hide()"class="close">&times;</a>
+          </div>
+    </div>
+    </div>
+     <div class="row">
+      <div class="large-4 columns">
+        <h3>Name</h3>
+      </div>
+
+      <div class="large-4 columns">
+        <h3>Email</h3>
+      </div>
+      <div class="large-4 columns">
+        &nbsp
+      </div>
+      <hr>
+    </div>
+    <div class="row" ng-repeat="user in users">
+      <div style="margin-top:10px;" >
+        <div class="large-4 columns">
+          <a href="#/users/{{user._id}}"><div class="user-name">{{user.name}}</div></a>
+        </div>
+
+        <div class="large-4 columns">
+          <div class="user-name">{{user.email}}</div> 
+        </div>
+
+        <div class="large-4 columns">
+          <a href="#/users" ng-click="deleteUser(users, $index, user.name, user._id)" class="button tiny alert">Delete User</a>
+        </div>
+      </div>
+      <hr>
+    </div>
+</div>
+

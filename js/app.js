@@ -1,16 +1,32 @@
 // var demoApp = angular.module('demoApp', ['demoControllers']);
 
-var demoApp = angular.module('demoApp', ['ngRoute', 'demoControllers', 'demoServices']);
+var demoApp = angular.module('demoApp', ['ngRoute', 'demoControllers', 'demoServices','720kb.datepicker']);
 
 demoApp.config(['$routeProvider', function($routeProvider) {
   $routeProvider.
-    when('/firstview', {
-    templateUrl: 'partials/firstview.html',
-    controller: 'FirstController'
+    when('/users', {
+    templateUrl: 'partials/users.html',
+    controller: 'UsersController'
   }).
-  when('/secondview', {
-    templateUrl: 'partials/secondview.html',
-    controller: 'SecondController'
+  when('/addUser', {
+    templateUrl: 'partials/adduser.html',
+    controller: 'AddUserController'
+  }).
+  when('/users/:id', {
+    templateUrl: 'partials/userdetails.html',
+    controller: 'UserDetailsController'
+  }).
+  when('/tasks', {
+    templateUrl: 'partials/tasks.html',
+    controller: 'TasksController'
+  }).
+  when('/tasks/:id', {
+    templateUrl: 'partials/taskdetails.html',
+    controller: 'TaskDetailsController'
+  }).
+  when('/editTask/:id', {
+    templateUrl: 'partials/edittask.html',
+    controller: 'EditTaskController'
   }).
   when('/settings', {
     templateUrl: 'partials/settings.html',

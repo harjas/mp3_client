@@ -1,0 +1,25 @@
+<div class="list" ng-controller='AddUserController'>
+
+<span style="text-align:center;"><h1>Adding Another User - Yeah boi!</h1></span>
+<form id="add-user-form" data-abide style="margin:0 auto; width:50%">
+	<div ng-hide="hideValue" class="large-12 column">
+          <div data-alert class="alert-box round">
+              {{response['message']}}
+            <a href="#/addUser" ng-click="hide()"class="close">&times;</a>
+          </div>
+    </div>
+  <div class="name-field">
+    <label>Your name <small>required</small>
+      <input ng-model="user.name" type="text" required>
+    </label>
+    <small class="error">Name is required and must be a string.</small>
+  </div>
+  <div class="email-field">
+    <label>Email <small>required</small>
+      <input ng-model="user.email" type="email" required>
+    </label>
+    <small class="error">An email address is required.</small>
+  </div>
+  <button ng-click="addUser()" type="submit">Submit</button>
+</form>
+</div>

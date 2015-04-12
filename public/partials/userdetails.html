@@ -1,0 +1,40 @@
+<div class="list" ng-controller='UserDetailsController'>
+
+<div style="text-align: center;"><h1><u>User Prof, Burh!</u></h1> </div>
+
+<div class="row">
+  <div style="margin-top:10px;" >
+    <div class="large-8 columns">
+     <div class="user-name" style="float:left;"><h1>{{user['data'].name}}</h1></div>
+    </div>
+
+    <div class="large-4 columns">
+      <div class="user-name" style="float:right"><h4>{{user['data'].email}}</h4></div> 
+    </div>
+  </div>
+  <hr>
+</div>
+<div class="row" ng-repeat="task in tasks['data']">
+	<div class="large-6 columns" style="text-align:left;">
+		<a href="#/tasks/{{task._id}}">{{task.name}}</a>
+	</div>
+	<div class="large-4 columns">
+		{{task.deadline}}
+	</div>
+	<div class="large-2 columns">
+		<a ng-click="markTaskCompleted($index, task)" class="button small success">Completed</a>
+	</div>
+	<hr>
+</div>
+
+<div style="margin: 0 auto; text-align:center;"><a class="button" ng-click="getCompletedTasks()">Completed Tasks </a></div>
+	<div class="row" ng-repeat="task in completedTasks['data']">
+	<div class="large-8 columns" style="text-align:left;">
+		{{task.name}}
+	</div>
+	<div class="large-4 columns">
+		{{task.deadline}}
+	</div>
+	<hr>
+</div>
+</div>
