@@ -108,10 +108,57 @@ demoControllers.controller('UserDetailsController', ['$scope', '$http', '$routeP
 
 demoControllers.controller('TasksController', ['$scope', '$http', 'Tasks', '$window' , function($scope, $http,  Tasks, $window) {
 
-  Tasks.get().success(function(data){
-    $scope.tasks = data['data'];
+  $scope.curPage = 0;
+  $scope.pageSize = 10;
+  $scope.tasks = {};
+  $scope.hideValue = true;
+  $scope.taskFilter = false;
+  $scope.taskSortBy = "";
+  $scope.taskOrderBy = 1;
+
+  $scope.$watchGroup(['taskSortBy', 'taskOrderBy'], function(newValues, oldValues) {
+
+    if(newValues[0].length === 0) {
+      Tasks.get().success(function(data){
+        $scope.tasks = data['data'];
+      });
+    }
+    else {
+      console.log("changes");
+      console.log(newValues[0]);
+      console.log(newValues[1]);
+      Tasks.getSortedTasks(newValues[0], newValues[1]).success(function(data, status) {
+        $scope.tasks = data['data'];
+      });
+    }
   });
 
+  $scope.hide = function(){
+    $scope.hideValue = true;
+  }
+
+  $scope.numberOfPages = function(){
+    return Math.ceil($scope.tasks.length / $scope.pageSize);
+  };
+
+  $scope.deleteTask = function(id, index) {
+    Tasks.deleteTask(id).success(function(data, status) {
+      if(status === 200){
+        $scope.hideValue = false;
+        $scope.message = data['message'];
+        $(".alert-box").removeClass("alert").addClass("success");
+        $scope.tasks.splice(index, 1);
+      }
+    }).error(function(data, status, headers, config) {
+        console.log(status);
+        console.log(data);
+        $scope.hideValue = false;
+        $scope.message = data['message'];
+        if(status === 404){
+          $(".alert-box").removeClass("success").addClass("alert");
+        }
+    });
+  }
 }]);
 
 demoControllers.controller('TaskDetailsController', ['$scope', '$http', 'Tasks', '$routeParams','$window' , function($scope, $http,  Tasks, $routeParams, $window) {
@@ -287,5 +334,13 @@ demoControllers.controller('SettingsController', ['$scope' , '$window' , functio
   };
 
 }]);
+
+demoControllers.filter('pagination', function()
+{
+  return function(input, start) {
+    start = parseInt(start, 10);
+    return input.slice(start);
+  };
+});
 
 

@@ -1,36 +1,76 @@
 <div class="list" ng-controller='TasksController'>    
-  <span style="float:right; margin-right: 8%;"><a href="#/addTask" class="button success">Add Task</a></span>
-  
+  <span style="float:right; margin-right: 8%;"><a href="#/tasks" class="button success">Add Task</a></span>
+  <div ng-hide="hideValue" class="large-12 column">
+          <div data-alert class="alert-box round">
+              {{message}}
+            <a href="#/editTask/{{task['data']._id}}" ng-click="hide()"class="close">&times;</a>
+          </div>
+    </div>
+    <div class="row">
+	<div class="columns">
+		<form>
+		  <input ng-model="taskFilter" name="radioFilter" ng-value="" type="radio"> All
+		  <input ng-model="taskFilter" name="radioFilter" ng-value="false" type="radio"> Pending
+		  <input ng-model="taskFilter" name="radioFilter" ng-value="true" type="radio"> Completed
+		</form>
+	</div>
+	<div class="columns">
+		<h3>Sort</h3>
+	    <select ng-model="taskSortBy">
+	      <option value="name">Name</option>
+	      <option value="assignedUserName">AssignedTo</option>
+	      <option value="dateCreated">Date Created</option>
+	      <option value="dealine">Deadline</option>
+	    </select>
+	</div>
+	<div class="columns">
+	<form>
+      <input ng-model="taskOrderBy" name="radioFilter" ng-value="1" type="radio"> Ascending
+      <input ng-model="taskOrderBy" name="radioFilter" ng-value="-1" type="radio"> Descending
+    </form>
+    </div>
+	</div>
   <div class="row">
     <div class="small-4 columns">
-      <h4>Name</h4>
+      <h3>Name</h3>
     </div>
     <div class="small-5 columns">
-      <h4>ID</h4>
+      <h3>Assigned To</h3>
     </div>
     <div class="small-3 columns">
-      <h4>&nbsp</h4>
+      <h3>&nbsp</h3>
     </div>
   </div>
 
   <ul>
-    <li ng-repeat="task in tasks">
+    <li ng-repeat="task in tasks | pagination:curPage*pageSize | limitTo:pageSize | filter:{completed:taskFilter}">
     <!-- <li dir-paginate="task in tasks | itemsPerPage: 10"> -->
       <div class="row">
-        <div class="small-4 columns">
+        <div class="large-4 columns">
           <a href="#/tasks/{{task._id}}"<span ng-bind="task.name"></span></a>
         </div>
-        <div class="small-5 columns">
-          <span ng-bind="task.assignedUser"></span>
+        <div class="large-4 columns">
+          <span ng-bind="task.assignedUserName"></span>
         </div>
-        <div class="small-3 columns">
+        <div class="large-4 columns">
           <button ng-click="deleteTask(task._id, $index)" class="button tiny alert">Delete Task</button>
         </div>
       </div>
+      <hr>
     </li>
   </ul>
 
-  <dir-pagination-controls
-    template-url="./lib/angular-utils-pagination/dirPagination.tpl.html">
- 	</dir-pagination-controls>
+ <!--  <div class="row">
+    <button class="button default" ng-click="prevPage()">Prev</button>
+    <button class="button default" ng-click="nextPage()">Next</button>
+  </div> -->
+
+	  <div class="row" ng-show="tasks.length">
+		  <button type="button" ng-disabled="curPage == 0"
+		 ng-click="curPage=curPage-1">PREV</button>
+		 <span>Page {{curPage + 1}} of {{ numberOfPages() }}</span>
+		 <button type="button"
+		 ng-disabled="curPage >= tasks.length/pageSize - 1"
+		 ng-click="curPage = curPage+1">NEXT </button>
+	</div>
 </div>

@@ -58,6 +58,14 @@ angular.module('demoServices', [])
             addTask: function(task){
                 var baseUrl = $window.sessionStorage.baseurl;
                 return $http.post(baseUrl+'/api/tasks/',task);    
+            },
+            deleteTask: function(id){
+                var baseUrl = $window.sessionStorage.baseurl;
+                return $http.delete(baseUrl+'/api/tasks/'+id);    
+            },
+            getSortedTasks: function(sort, order){
+                var baseUrl = $window.sessionStorage.baseurl;
+                return $http.get(baseUrl+'/api/tasks?sort={\"'+sort+'\":'+order+'}');
             }
         }
     })
